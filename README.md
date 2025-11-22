@@ -3,8 +3,8 @@
 A Flask app that computes the edit distance between two words inputted by the user.
 
 Files:
-- app.py — your Flask app (the script you run)
-- templates/index.html — the HTML template (replace with the provided simple version)
+- app.py 
+- templates/index.html
 
 Quick steps to run locally:
 
