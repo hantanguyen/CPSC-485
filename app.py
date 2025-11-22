@@ -12,21 +12,21 @@ def edit_distance_algorithm(word1, word2):
 
     # creating the dynamic programming (dp) matrix where (m + 1) x (n + 1) are filled with 0's
     # Use a list comprehension here since it makes a matrix with m + 1 rows and n + 1 columns that make a new n + 1 0's for each row 
-    dp = [[0] * (n + 1) for i in range(m + 1)]
+    dp_matrix = [[0] * (n + 1) for i in range(m + 1)]
 
     # We need the minimum edits to turn word1 into an empty string since its a specific case for the word a user can enter
     # EX : word1 = "dog" -> dp[3][0] = 3(delete 'd','o','g')
     # Start the first column since we need to turn word1 into an empty string
     for i in range(m + 1):
         # i deletions needed 
-        dp[i][0] = i
+        dp_matrix[i][0] = i
 
     # We need the minimum edits to turn the empty string into word2 
     # EX: word2 = "dog" -> dp[0][3] = 3(insert 'd','o','g')
     # Start with the first row 
     for j in range(n + 1): 
         # j insertions needed 
-        dp[0][j] = j
+        dp_matrix[0][j] = j
 
     # These are the base cases the DP uses to compute all other cells in the matrix 
 
@@ -54,13 +54,78 @@ def edit_distance_algorithm(word1, word2):
             (i + 1, j + 1)
             """
 
-            dp[i][j] = min(
+            dp_matrix[i][j] = min(
                 # Insert a character
-                dp[i][j - 1] + 1,  
+                dp_matrix[i][j - 1] + 1,  
                 # Delete a character
-                dp[i - 1][j] + 1, 
+                dp_matrix[i - 1][j] + 1, 
                 # Substitute a character
-                dp[i - 1][j - 1] + substitute_cost
+                dp_matrix[i - 1][j - 1] + substitute_cost
             )
     # return dp table 
-    return dp 
+    return dp_matrix
+
+# Implement the alignment function where the two strings of word1 and word2 will show the edits if there was a match, insertion, deletion, or substitution 
+# This function will need to take 3 parameters, word1, word2, dp_matrix
+def alignment(word1, word2, dp_matrix,):
+
+    # starts at the end of word1, decrement i when a character is used from word1
+    i = len(word1)
+     # starts at the end of word2, decrement j when a character is used from word2
+    j = len(word2)
+
+    # empty to build the top alignment using characters from word1 like "_" for the gaps
+    top_alignment = ""
+    # empty to build the bottom alignment using characters from word2 like "_" for the gaps
+    bottom_alignment = "" 
+
+    # Start to loop through both words, stop when i == 0 and j == 0 
+    while i > 0 or j > 0: 
+        # for a diagonal operation(match or substitute) and if both words still have characters 
+        if i > 0 and j > 0: 
+            # compare the last character of each word and if they match then the cost is 0 
+            # but if we need to substitute then it'll cost 1 
+            if word1[i - 1] == word2[j - 1]:
+                substitute_cost = 0 
+            else: 
+                substitute_cost = 1
+
+            # check to see if the minimum cost was diagonal from dp_matrix[i-1][j-1] and if it was a match or a substitute(costs less compared to an insertion or deletion)
+            if dp_matrix[i][j] == dp_matrix[i - 1][j - 1] + substitute_cost: 
+            # this also means that the best move was a diagonal move 
+                # put the current character from word1 at the front of the top alignment string 
+                top_alignment = word1[i - 1] + top_alignment
+                # put the current character from word2 at the front of the bottom alignment string 
+                bottom_alignment = word2[j - 1] + bottom_alignment
+                # decrement one character back from word1 
+                i -= 1
+                # decrement one character back from word2
+                j -= 1
+                # continue since this is only considering if we make a diagonal move not up or left in the table 
+                continue 
+        
+        # if we deleted the last character of word1
+        if i > 0 and dp_matrix[i][j] == dp_matrix[i - 1][j] + 1:
+            # add deleted character from word1 to the top_alignment 
+            top_alignment = word1[i - 1] + top_alignment
+            # add a "_" to the bottom_alignment since there wasn't a character from word2 that lined up with the position of word1
+            bottom_alignment = "_" + bottom_alignment
+            # move through the dp_matrix
+            i -= 1
+            # continue since this is only considering if we deleted any characters 
+            continue
+
+        # if we came from the left insertion of word2
+        if j > 0 and dp_matrix[i][j] == dp_matrix[i][j - 1] + 1: 
+            # add a "_" to the top_alignment since there wasn't a character that matched from word1 
+            top_alignment = "_" + top_alignment
+            # add inserted character from word2 to the bottom_alignment 
+            bottom_alignment = word2[j - 1] + bottom_alignment
+            # move left through the dp_matrix
+            j -= 1
+            # continue since this is only considering if we moved any characters 
+            continue
+
+    return top_alignment, bottom_alignment
+
+
