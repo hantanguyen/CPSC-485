@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to Edit Distance Algorithm</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        header { margin-bottom: 1rem; }
+        table { border-collapse: collapse; margin-top: 0.5rem; }
+        th, td { border: 1px solid #999; padding: 6px 8px; text-align: center; }
+        pre { background: #afbff6; padding: 8px; white-space: pre-wrap; word-wrap: break-word; }
+        form input[type="text"] { width: 250px; padding: 6px; }
+        .controls { margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to Edit Distance Algorithm!</h1>
+        <p>CPSC 485: Dr. Shawn Wang</p>
+        <p>Hori Nguyen</p>
+    </header>
+
+    <section>
+        <h2>Enter two words to compute the edit distance: </h2>
+
+        <form method="POST">
+            <div>
+                <label for="word1">Word 1:</label>
+                <input id="word1" type="text" name="word1" required>
+            </div>
+
+            <br>
+
+            <div>
+                <label for="word2">Word 2:</label>
+                <input id="word2" type="text" name="word2" required>
+            </div>
+
+            <br>
+
+            <div class="controls">
+                <button type="submit">Submit the words</button>
+                <button type="button" onclick="window.location='/'">Clear</button>
+            </div>
+        </form>
+    </section>
+
+    <hr>
+
+    {% if distance is not none %}
+        <section>
+            <h3>Output Matrix:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        {% for j in range(matrix[0]|length) %}
+                            <th>{{ j }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in matrix %}
+                        <tr>
+                            <th>{{ loop.index0 }}</th>
+                            {% for cell in row %}
+                                <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Edit Distance: {{ distance }}</h2>
+            <h3>Alignment:</h3>
+            <pre>{{ top_alignment }}</pre>
+            <pre>{{ bottom_alignment }}</pre>
+        </section>
+    {% endif %}
+</body>
+</html>

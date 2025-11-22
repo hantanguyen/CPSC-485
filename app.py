@@ -137,10 +137,12 @@ def index():
     distance = None
     top_alignment = ""
     bottom_alignment = ""
+    word1 = ""
+    word2 = ""
 
     if request.method == "POST":
-        word1 = request.form["word1"]
-        word2 = request.form["word2"]
+        word1 = request.form.get("word1", "")
+        word2 = request.form.get("word2", "")
 
         dp_matrix = edit_distance_algorithm(word1, word2)
         distance = dp_matrix[len(word1)][len(word2)]
@@ -151,7 +153,9 @@ def index():
         matrix=dp_matrix,
         distance=distance,
         top_alignment=top_alignment,
-        bottom_alignment=bottom_alignment
+        bottom_alignment=bottom_alignment,
+        word1=word1,
+        word2=word2
     )
 
 
