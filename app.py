@@ -128,4 +128,32 @@ def alignment(word1, word2, dp_matrix,):
 
     return top_alignment, bottom_alignment
 
+# Flask Routing 
+# Flask route
+@app.route("/", methods=["GET", "POST"])
+def index():
 
+    dp_matrix = None
+    distance = None
+    top_alignment = ""
+    bottom_alignment = ""
+
+    if request.method == "POST":
+        word1 = request.form["word1"]
+        word2 = request.form["word2"]
+
+        dp_matrix = edit_distance_algorithm(word1, word2)
+        distance = dp_matrix[len(word1)][len(word2)]
+        top_alignment, bottom_alignment = alignment(word1, word2, dp_matrix)
+
+    return render_template(
+        "index.html",
+        matrix=dp_matrix,
+        distance=distance,
+        top_alignment=top_alignment,
+        bottom_alignment=bottom_alignment
+    )
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
