@@ -1,6 +1,6 @@
-# Edit-Distance-Alg (simple)
+# Programming assignment for CPSC-485: Bioinformatics
 
-Very Flask app that computes the edit distance between two words inputted by the user.
+A Flask app that computes the edit distance between two words inputted by the user.
 
 Files:
 - app.py — your Flask app (the script you run)
