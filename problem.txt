@@ -1,0 +1,47 @@
+Write a program to calculate the edit distance between two words and output both the matrix of distance calculation and an alignment that 
+demonstrates the result. Your program should ask for input of two words, calculate the edit distance, output the matrix of calculation and
+an alignment that verifies the edit distance. You may use any programming language that you are most familiar. In front of your submission 
+you should include a paragraph of comments describing how I can compile and test your program, including the required tools/environment. 
+MATLAB is not acceptable since I do not have MATLAB in my computer.
+
+Three operations we can do: 
+1. Insert a character 
+(i, j + 1)
+2. Delete a character
+(i + 1, j)
+3. Replace a character
+(i + 1, j + 1)
+
+Brute Force: Using Two pointers 
+* word1: i + 1 
+* word2: j + 1
+
+so if the characters are equal we increment by 1 
+if word1[i] = word2[j] / (i + 1, j + 1)
+
+if the characters are not equal, i is the same of word1 but j is incremented of word2 to find a match
+example: 
+        
+        ii 
+word1 = def 
+word2 = daf 
+        jjj 
+
+else: 
+    (i, j+1)
+    (i+1, j)
+
+replacing a character: 
+P being the new postion 
+
+        iiP
+word1 = daf 
+word2 = daf 
+        jjP 
+
+        iii i
+word1 = daf 
+word2 = daf 
+        jjj j 
+
+cost is 1 since we had to replace 1 character
