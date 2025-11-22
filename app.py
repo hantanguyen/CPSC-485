@@ -129,7 +129,6 @@ def alignment(word1, word2, dp_matrix,):
     return top_alignment, bottom_alignment
 
 # Flask Routing 
-# Flask route
 @app.route("/", methods=["GET", "POST"])
 def index():
 
